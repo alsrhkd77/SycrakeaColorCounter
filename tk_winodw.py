@@ -1,6 +1,5 @@
 import tkinter
 import functools
-import sys
 
 
 class TkWindow:
@@ -43,7 +42,6 @@ class TkWindow:
 
     def destroy(self):
         self.window.destroy()
-        sys.exit()
 
     def set_overlay(self, check):
         self.overlay = check
@@ -84,7 +82,7 @@ class TkWindow:
             # Color label
             label_text = self.settings["colors"][i][0].upper() if self.counter[
                                                                       self.settings["colors"][i]] == 0 else str(
-                self.counter[self.settings["colors"]])
+                self.counter[self.settings["colors"][i]])
             label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, 25), width=0, height=0,
                                   background="#353535", foreground=self.settings["colors"][i], relief="flat")
             label.place(x=w * (i + 1), rely=0.175, anchor="center")
@@ -97,7 +95,8 @@ class TkWindow:
             self.hot_key_label.append(hot_label)
         self.overlay_text_label = tkinter.Label(self.window,
                                                 text=self.settings["hot_keys"]["reset"].upper() + "를 눌러 카운터 초기화\n" +
-                                                     self.settings["hot_keys"]["toggle_overlay"].upper() + "를 눌러 오버레이 종료\n" +
+                                                     self.settings["hot_keys"][
+                                                         "toggle_overlay"].upper() + "를 눌러 오버레이 종료\n" +
                                                      self.settings["hot_keys"]["exit_program"].upper() + "를 눌러 프로그램 종료",
                                                 font=(self.fontFamily, 8, "bold"), width=0, height=0,
                                                 background="#353535",

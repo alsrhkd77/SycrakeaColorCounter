@@ -1,3 +1,4 @@
+import sys
 import tkinter
 from tkinter import messagebox
 from tk_winodw import TkWindow
@@ -56,9 +57,9 @@ def toggle_overlay():
 
 
 def destroy():
-    global tk, hot_keys
-    hot_keys.stop()
+    global tk
     tk.destroy()
+    sys.exit()
 
 
 def show_error(errors):
@@ -70,8 +71,6 @@ def show_error(errors):
 
 if __name__ == '__main__':
     global tk, window, hot_keys
-    colors = ["red", "blue", "yellow", "white"]
-    colors_korean = {"red": "빨", "blue": "파", "white": "흰", "yellow": "노"}
     hot_key = {}
     functions = {
         "colors_1+": color1_plus,
@@ -86,19 +85,14 @@ if __name__ == '__main__':
         "toggle_overlay": toggle_overlay,
         "exit_program": destroy,
     }
-
     initializer = Initializer()
-    print(initializer.error)
     if len(initializer.error) > 0:
         show_error(initializer.error)
     for h in initializer.settings["hot_keys"].keys():
         if initializer.settings["hot_keys"][h] != "":
             hot_key[initializer.settings["hot_keys"][h]] = functions[h]
-
-    hot_keys = keyboard.GlobalHotKeys(hot_key)
-    hot_keys.start()
     window = tkinter.Tk()
     tk = TkWindow(window, initializer.settings)
-
+    hot_keys = keyboard.GlobalHotKeys(hot_key)
+    hot_keys.start()
     window.mainloop()
-    hot_keys.join()
