@@ -6,10 +6,10 @@ block_cipher = None
 
 a = Analysis(
     ['main.py'],
-    pathex=['E:\BDO\SycrakeaColorCounter'],
+    pathex=['D:\\MinGwang\\python\\sycrakeaColorCounter'],
     binaries=[],
     datas=[],
-    hiddenimports=['pynput.keyboard','tk_window.TkWindow'],
+    hiddenimports=['tk_window.TkWindow','pynput.keyboard', 'initializer.Initializer'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='E:\BDO\SycrakeaColorCounter\\logo.ico',
+    icon='D:\\MinGwang\\python\\sycrakeaColorCounter\\logo.ico',
 )

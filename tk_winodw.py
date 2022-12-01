@@ -4,26 +4,22 @@ import sys
 
 
 class TkWindow:
-    def __init__(self, window, colors=None, colors_korean=None, hot_keys=None, font_size=25):
+    def __init__(self, window, settings: dict):
         self.overlay_button = None
         self.refresh_button = None
         self.overlay_text_label = None
-        if colors is None:
-            colors = ["red", "blue", "yellow", "white"]
-        if colors_korean is None:
-            colors_korean = {"red": "빨강", "blue": "파랑", "white": "하양", "yellow": "노랑"}
-        if hot_keys is None:
-            hot_keys = ["<alt>+a", "<alt>+s", "<alt>+d", "<alt>+f", "<alt>+q"]
+
+        hot_keys = settings["hot_keys"]
 
         # Set value
+        self.overlay = False
         self.color_label = []
         self.hot_key_label = []
         self.plus_button = []
         self.minus_button = []
-        self.colors = colors
-        self.colors_korean = colors_korean
-        self.hot_keys = hot_keys
-        self.font_size = font_size
+        self.settings = settings
+        self.hot_keys = [hot_keys["colors_1+"], hot_keys["colors_2+"], hot_keys["colors_3+"], hot_keys["colors_4+"], ]
+        self.font_size = 25
         self.counter = {}
         self.fontFamily = "맑은 고딕"
         self.init()
@@ -34,22 +30,23 @@ class TkWindow:
         self.window.configure(background="#353535")
         self.window.resizable(False, False)  # Height, Width
 
-        self.set_overlay(False)
+        self.set_overlay(self.overlay)
 
     # Init counter & label
     def init(self):
         self.counter.clear()
-        for c in self.colors:
+        for c in self.settings["colors"]:
             self.counter[c] = 0
         if len(self.color_label) > 0:
             for i in range(len(self.color_label)):
-                self.color_label[i].config(text=self.colors_korean[self.colors[i]], font=(self.fontFamily, 25))
+                self.color_label[i].config(text=self.settings["colors"][i][0].upper(), font=(self.fontFamily, 25))
 
     def destroy(self):
         self.window.destroy()
         sys.exit()
 
     def set_overlay(self, check):
+        self.overlay = check
         self.window.overrideredirect(check)
         self.window.lift()
         self.window.wm_attributes("-topmost", check)
@@ -57,11 +54,11 @@ class TkWindow:
         if check:
             self.window.geometry("300x120-5+4")  # Width X Height + x + y
             self.window.wm_attributes("-transparentcolor", "#353535")
-            self.window.wm_attributes("-alpha", "0.6")
+            self.window.wm_attributes("-alpha", self.settings["overlay_alpha"])
             self.build_overlay_color_widget()
         else:
             self.window.geometry("400x200-0+0")  # Width X Height + x + y
-            # self.window.wm_attributes("-transparentcolor", "#353535")
+            self.window.wm_attributes("-transparentcolor", "#EAEAEA")
             self.window.wm_attributes("-alpha", "1.0")
             self.build_foreground_color_widget()
 
@@ -82,24 +79,30 @@ class TkWindow:
             self.overlay_button = None
 
         between = 0.2
-        for i in range(len(self.colors)):
+        w = 300 / (len(self.settings["colors"]) + 1)
+        for i in range(len(self.settings["colors"])):
             # Color label
-            label_text = self.colors_korean[self.colors[i]] if self.counter[self.colors[i]] == 0 else str(
-                self.counter[self.colors[i]])
+            label_text = self.settings["colors"][i][0].upper() if self.counter[
+                                                                      self.settings["colors"][i]] == 0 else str(
+                self.counter[self.settings["colors"]])
             label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, 25), width=0, height=0,
-                                  background="#353535", foreground=self.colors[i], relief="flat")
-            label.place(relx=0.1 + (between * i), rely=0.025)
+                                  background="#353535", foreground=self.settings["colors"][i], relief="flat")
+            label.place(x=w * (i + 1), rely=0.175, anchor="center")
             self.color_label.append(label)
             hot_label = tkinter.Label(self.window, text=self.hot_keys[i].upper(), font=(self.fontFamily, 8, "bold"),
                                       width=0,
-                                      height=0, background="#353535", foreground=self.colors[i], relief="flat")
-            hot_label.place(relx=0.07 + (between * i), rely=0.45)
+                                      height=0, background="#353535", foreground=self.settings["colors"][i],
+                                      relief="flat")
+            hot_label.place(x=w * (i + 1), rely=0.45, anchor="center")
             self.hot_key_label.append(hot_label)
-        self.overlay_text_label = tkinter.Label(self.window, text="<ALT>+O를 눌러 오버레이 종료\n<ALT>+Q를 눌러 프로그램 종료",
+        self.overlay_text_label = tkinter.Label(self.window,
+                                                text=self.settings["hot_keys"]["reset"].upper() + "를 눌러 카운터 초기화\n" +
+                                                     self.settings["hot_keys"]["toggle_overlay"].upper() + "를 눌러 오버레이 종료\n" +
+                                                     self.settings["hot_keys"]["exit_program"].upper() + "를 눌러 프로그램 종료",
                                                 font=(self.fontFamily, 8, "bold"), width=0, height=0,
                                                 background="#353535",
                                                 foreground="white", relief="flat")
-        self.overlay_text_label.place(relx=0.2, rely=0.65)
+        self.overlay_text_label.place(relx=0.2, rely=0.55)
 
     def build_foreground_color_widget(self):
         # Clear overlay widget
@@ -120,12 +123,14 @@ class TkWindow:
                                              height=0,
                                              command=functools.partial(self.set_overlay, True))
         self.overlay_button.place(relx=0.74, rely=0.07)
-        for i in range(len(self.colors)):
+        for i in range(len(self.settings["colors"])):
             # Color label
-            label_text = self.colors_korean[self.colors[i]] if self.counter[self.colors[i]] == 0 else str(
-                self.counter[self.colors[i]])
+            label_text = self.settings["colors"][i][0].upper() if self.counter[
+                                                                      self.settings["colors"][i]] == 0 else str(
+                self.counter[self.settings["colors"][i]])
             label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, 25), width=3, height=1,
-                                  background=self.colors[i], foreground="black", relief="flat")
+                                  background=self.settings["colors"][i], foreground=self.settings["font_colors"][i],
+                                  relief="flat")
             label.place(relx=0.125 + (between * i), rely=0.275)
             self.color_label.append(label)
             # Plus button
@@ -141,10 +146,12 @@ class TkWindow:
             self.minus_button.append(minus_button)
 
     def plus(self, index):
-        self.counter[self.colors[index]] += 1
-        self.color_label[index].config(text=str(self.counter[self.colors[index]]), font=(self.fontFamily, 25, "bold"))
+        self.counter[self.settings["colors"][index]] += 1
+        self.color_label[index].config(text=str(self.counter[self.settings["colors"][index]]),
+                                       font=(self.fontFamily, 25, "bold"))
 
     def minus(self, index):
-        if self.counter[self.colors[index]] > 0:
-            self.counter[self.colors[index]] -= 1
-        self.color_label[index].config(text=str(self.counter[self.colors[index]]), font=(self.fontFamily, 25, "bold"))
+        if self.counter[self.settings["colors"][index]] > 0:
+            self.counter[self.settings["colors"][index]] -= 1
+        self.color_label[index].config(text=str(self.counter[self.settings["colors"][index]]),
+                                       font=(self.fontFamily, 25, "bold"))

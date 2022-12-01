@@ -1,0 +1,28 @@
+{
+  "colors": [
+    "red",
+    "blue",
+    "yellow",
+    "white"
+  ],
+  "font_colors": [
+    "black",
+    "black",
+    "black",
+    "black"
+  ],
+  "hot_keys": {
+    "colors_1+": "<alt>+a",
+    "colors_2+": "<alt>+s",
+    "colors_3+": "<alt>+d",
+    "colors_4+": "<alt>+f",
+    "colors_1-": "",
+    "colors_2-": "",
+    "colors_3-": "",
+    "colors_4-": "",
+    "reset": "<alt>+e",
+    "toggle_overlay": "<alt>+o",
+    "exit_program": "<alt>+q"
+  },
+  "overlay_alpha": 0.6
+}
