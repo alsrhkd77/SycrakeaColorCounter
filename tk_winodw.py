@@ -38,7 +38,7 @@ class TkWindow:
             self.counter[c] = 0
         if len(self.color_label) > 0:
             for i in range(len(self.color_label)):
-                self.color_label[i].config(text=self.settings["colors"][i][0].upper(), font=(self.fontFamily, 25))
+                self.color_label[i].config(text=self.settings["colors"][i][0].upper(), font=(self.fontFamily, self.font_size))
 
     def destroy(self):
         self.window.destroy()
@@ -50,7 +50,7 @@ class TkWindow:
         self.window.wm_attributes("-topmost", check)
         self.window.wm_attributes("-disabled", check)  # Click through
         if check:
-            self.window.geometry("300x120-5+4")  # Width X Height + x + y
+            self.window.geometry("300x120-8+18")  # Width X Height + x + y
             self.window.wm_attributes("-transparentcolor", "#353535")
             self.window.wm_attributes("-alpha", self.settings["overlay_alpha"])
             self.build_overlay_color_widget()
@@ -80,10 +80,8 @@ class TkWindow:
         w = 300 / (len(self.settings["colors"]) + 1)
         for i in range(len(self.settings["colors"])):
             # Color label
-            label_text = self.settings["colors"][i][0].upper() if self.counter[
-                                                                      self.settings["colors"][i]] == 0 else str(
-                self.counter[self.settings["colors"][i]])
-            label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, 25), width=0, height=0,
+            label_text = str(self.counter[self.settings["colors"][i]])
+            label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, self.font_size, "bold"), width=0, height=0,
                                   background="#353535", foreground=self.settings["colors"][i], relief="flat")
             label.place(x=w * (i + 1), rely=0.175, anchor="center")
             self.color_label.append(label)
@@ -124,10 +122,8 @@ class TkWindow:
         self.overlay_button.place(relx=0.74, rely=0.07)
         for i in range(len(self.settings["colors"])):
             # Color label
-            label_text = self.settings["colors"][i][0].upper() if self.counter[
-                                                                      self.settings["colors"][i]] == 0 else str(
-                self.counter[self.settings["colors"][i]])
-            label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, 25), width=3, height=1,
+            label_text = str(self.counter[self.settings["colors"][i]])
+            label = tkinter.Label(self.window, text=label_text, font=(self.fontFamily, self.font_size, "bold"), width=3, height=1,
                                   background=self.settings["colors"][i], foreground=self.settings["font_colors"][i],
                                   relief="flat")
             label.place(relx=0.125 + (between * i), rely=0.275)
@@ -147,10 +143,10 @@ class TkWindow:
     def plus(self, index):
         self.counter[self.settings["colors"][index]] += 1
         self.color_label[index].config(text=str(self.counter[self.settings["colors"][index]]),
-                                       font=(self.fontFamily, 25, "bold"))
+                                       font=(self.fontFamily, self.font_size, "bold"))
 
     def minus(self, index):
         if self.counter[self.settings["colors"][index]] > 0:
             self.counter[self.settings["colors"][index]] -= 1
         self.color_label[index].config(text=str(self.counter[self.settings["colors"][index]]),
-                                       font=(self.fontFamily, 25, "bold"))
+                                       font=(self.fontFamily, self.font_size, "bold"))

@@ -6,7 +6,6 @@ block_cipher = None
 
 a = Analysis(
     ['main.py'],
-    pathex=['D:\\MinGwang\\python\\sycrakeaColorCounter'],
     binaries=[],
     datas=[],
     hiddenimports=['tk_window.TkWindow','pynput.keyboard', 'initializer.Initializer'],
@@ -41,5 +40,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='D:\\MinGwang\\python\\sycrakeaColorCounter\\logo.ico',
+    uac_admin=True,
+    icon='logo.ico',
 )

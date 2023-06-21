@@ -3,7 +3,7 @@ import os
 
 
 class Initializer:
-    file_name = "settings.json"
+    file_name = "config.json"
     error = []
     settings = {}
     default_settings = {
