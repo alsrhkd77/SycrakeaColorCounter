@@ -53,47 +53,89 @@ https://github.com/HwanSangYeonHwa/SycrakeaColorCounter/releases/latest
 
 <details>
 <summary>사용 가능한 특수키</summary>
+
 - alt
+
 - alt_gr
+
 - alt_l
+
 - alt_r
+
 - backspace
+
 - caps_lock
+
 - cmd
+
 - cmd_l
+
 - cmd_r
+
 - ctrl
+
 - ctrl_l
+
 - ctrl_r
+
 - delete
+
 - down
+
 - end
+
 - enter
+
 - esc
+
 - f1 ~ f20
+
 - home
+
 - insert
+
 - left
+
 - media_next
+
 - media_play_pause
+
 - media_previous
+
 - media_volume_down
+
 - media_volume_mute
+
 - media_volume_up
+
 - menu
+
 - num_lock
+
 - page_down
+
 - page_up
+
 - pause
+
 - print_screen
+
 - right
+
 - scroll_lock
+
 - shift
+
 - shift_l
+
 - shift_r
+
 - space
+
 - tab
+
 - up
+
 </details>
 
 <details>
